@@ -1,0 +1,16 @@
+ {                                                                           
+       "languageserver": {
+           "ccls": {
+               "command": "ccls",
+               "filetypes": ["c", "cc", "cpp", "c++"],
+               "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".ro    ot"],
+               "initializationOptions": {
+                   "cache": {
+                       "directory": ".cache/ccls"
+                   },
+                  "highlight": {"lsRanges": true }
+              } 
+          }     
+      }         
+ }
+
