@@ -1,0 +1,28 @@
+{
+  "" : [
+    "life",
+    "package",
+    "software",
+    "tutorial",
+    "test"
+  ],
+  "__raw_positions" : {
+    "test" : 5,
+    "package" : 2,
+    "software" : 3,
+    "tutorial" : 4,
+    "life" : 1,
+    "test\/2022-03-16.md" : 1
+  },
+  "test" : [
+    "2022-03-16.md"
+  ],
+  "__positions" : {
+    "tutorial" : 4,
+    "life" : 1,
+    "test" : 5,
+    "software" : 3,
+    "test\/2022-03-16.md" : 5001,
+    "package" : 2
+  }
+}
