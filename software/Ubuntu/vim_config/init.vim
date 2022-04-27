@@ -17,8 +17,9 @@ nmap <C-k> :Man<CR>
 map <leader>u :bp<CR>
 map <leader>n :bn<CR>
 
-"快速打开文件"
-map <C-o> :e<space>
+"切换跳转的页面"
+map <leader>[ : tabnext<CR>
+map <leader>] : tabprevious<CR>
 "快速新建vim页面"
 map <C-n> :tabnew<CR>
 "另存为的快捷键"
@@ -45,6 +46,8 @@ map <C-s> :w<space>
 map <leader>y :MarkdownPreview<CR>
 "退出预览模式
 map <leader>b :MarkdownPreviewStop<CR>
+"快速显示markdown目录"
+map <leader>m :Toc<CR>
 
 " ====基础设置====
 " Line Numbers
@@ -129,8 +132,8 @@ func SetTitle()
     if &filetype == 'sh' 
         call setline(1,"\#########################################################################") 
         call append(line("."), "\# File Name: ".expand("%")) 
-        call append(line(".")+1, "\# Author: ma6174") 
-        call append(line(".")+2, "\# mail: ma6174@163.com") 
+        call append(line(".")+1, "\#     Author: Yong") 
+        call append(line(".")+2, "\#     Mail: 1412202849@qq.com") 
         call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
         call append(line(".")+4, "\#########################################################################") 
         call append(line(".")+5, "\#!/bin/bash") 
@@ -138,8 +141,8 @@ func SetTitle()
     else 
         call setline(1, "/*************************************************************************") 
         call append(line("."), "    > File Name: ".expand("%")) 
-        call append(line(".")+1, "    > Author: ma6174") 
-        call append(line(".")+2, "    > Mail: ma6174@163.com ") 
+        call append(line(".")+1, "    > Author: Yong") 
+        call append(line(".")+2, "    > Mail: 1412202849@qq.com") 
         call append(line(".")+3, "    > Created Time: ".strftime("%c")) 
         call append(line(".")+4, " ************************************************************************/") 
         call append(line(".")+5, "")
@@ -151,7 +154,12 @@ func SetTitle()
     endif
     if &filetype == 'c'
         call append(line(".")+6, "#include<stdio.h>")
-        call append(line(".")+7, "")
+		call append(line(".")+7, "#include <stdlib.h>")
+		call append(line(".")+8, "#include <string.h>")
+		call append(line(".")+9, "#include <unistd.h>")
+		call append(line(".")+10, "#include <errno.h>")
+		call append(line(".")+11, "#include <pthread.h>")
+        call append(line(".")+12, "")
     endif
     "新建文件后，自动定位到文件末尾
     autocmd BufNewFile * normal G
@@ -357,12 +365,15 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+"定义一个函数查找路径中有没有Cmake文件，找到的话自动生成编译需要的头文件,就不会报找不到头文件的错误了，只需要执行下面定义的Gcmake即可调用此函数
+"如果是makefile项目的话，使用bear工具生成即可，cocconfig文件中说明了编译头文件路径的位置，生成的compile_commands.json也应该放在此目录下"
 function! s:generate_compile_commands()
   if empty(glob('CMakeLists.txt'))
     echo "Can't find CMakeLists.txt"
     return
   endif
   if empty(glob('.vscode'))
+	  "沉默的生成一个.vscode文件夹"
     execute 'silent !mkdir .vscode'
   endif
   execute '!cmake -DCMAKE_BUILD_TYPE=debug
@@ -374,6 +385,7 @@ command! -nargs=0 Gcmake :call s:generate_compile_commands()
 " 按键模式，可以去github查看快捷键
 let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 
+"定义一个函数用于在当前目录下快速生成一个.vimspector.json,这些函数本质都是判断加使用shell命令"
 function! s:generate_vimspector_conf()
   if empty(glob( '.vimspector.json' ))
     if &filetype == 'c' || 'cpp' 
